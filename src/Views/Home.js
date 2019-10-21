@@ -16,7 +16,7 @@ const Home = () => {
     return (
         <>
         <div className="container">
-            <h1>Home</h1>
+            <h1 className="text-center" >Home</h1>
             <div class="d-flex justify-content-end">
                 <Link to="/NewContact" >
                     <button className="btn btn-primary">+ New Contact</button>
@@ -47,7 +47,10 @@ const Home = () => {
                                     <br/>
                                     create: {item.created_at}
                                 </div>
-                            
+                                <div className="col-2">
+                                    <i class="fas fa-user-edit iconsEdit"></i>
+                                    <i class="fas fa-trash-alt iconsDelete ml-2"></i>
+                                </div>
                             </div>
                         </li>
                     )

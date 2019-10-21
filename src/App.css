@@ -1,3 +1,19 @@
 body {
   background-color: #f0f0f0;
 }
+
+.iconsEdit {
+  color: grey;
+  cursor: pointer;
+}
+.iconsEdit:hover {
+  color: blue;
+}
+
+.iconsDelete {
+  color: grey;
+  cursor: pointer;
+}
+.iconsDelete:hover {
+  color: red;
+}

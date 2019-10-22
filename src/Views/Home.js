@@ -25,6 +25,7 @@ const Home = () => {
         }).then(res => res.json())
         .then(response => {
             alert('Deleted!');
+            modalToggle();
         })
         .catch(error => alert('Error:', error));
     }
@@ -76,8 +77,18 @@ const Home = () => {
             <div id="myModal" className={["modal", modalVisible].join(' ')}>
                 <div className="modal-content">
                     <span onClick={modalToggle} className="close">&times;</span>
-                    <h3 className="text-center">Are you sure to delete {modalTitle}?</h3>
-                    <button onClick={() => deleteHanfler(modalID)}>DELETE</button>
+                    <h3 className="text-center">Are you sure to delete <b>{modalTitle}</b>?</h3>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <button className="btn btn-primary" onClick={modalToggle}>CANCEL</button>
+                            </div>
+                            <div className="col d-flex justify-content-end">
+                                <button className="btn btn-danger" onClick={() => deleteHanfler(modalID)}>DELETE</button>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
                     

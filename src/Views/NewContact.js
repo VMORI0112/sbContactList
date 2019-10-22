@@ -82,12 +82,19 @@ useEffect(() => {
                         onChange={e => setAddress(e.target.value)}
                     />
                     <br/>
-                    <input type="submit" value="send" onClick={formHandler}/>
+                    <div className="row">
+                        <div className="col">
+                            <Link to="/" className="btn btn-danger" >
+                                <i className="fas fa-arrow-left"></i> Cancel
+                            </Link>
+                        </div>
+                        <div className="col">
+                            <div className="d-flex justify-content-end">
+                                <input className="btn btn-success" type="button" value="Submit New Contact" onClick={formHandler} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <br/>
-                <Link to="/" >
-                    <i className="fas fa-arrow-left"></i> go back to Home
-                </Link>
             </div>
         </>
     );

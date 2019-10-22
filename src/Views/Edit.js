@@ -93,12 +93,20 @@ const formEditHandler = () => {
                         onChange={e => setAddress(e.target.value)}
                     />
                     <br/>
-                    <input type="submit" value="send" onClick={formEditHandler} />
+                    <div className="row">
+                        <div className="col">
+                            <Link to="/" className="btn btn-danger" >
+                                <i className="fas fa-arrow-left"></i> Cancel
+                            </Link>
+                        </div>
+                        <div className="col">
+                            <div className="d-flex justify-content-end">
+                                <input className="btn btn-success" type="button" value="Edit my contact" onClick={formEditHandler} />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <br/>
-                <Link to="/" className="btn btn-danger" >
-                    <i className="fas fa-arrow-left"></i> Cancel
-                </Link>
+                
             </div>
         </>
     );

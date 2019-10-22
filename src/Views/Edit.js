@@ -1,45 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const NewContact = () => {
+import { UserContext } from '../UserContext';
 
-    const [fullname, setFullname] = useState();
-    const [email, setEmail] = useState();
-    const [phone, setPhone] = useState();
-    const [address, setAddress] = useState();
-    const [data, setData] = useState();
+const Edit = (props) => {
+
+    const {data} = useContext(UserContext);
+
+    const [fullname, setFullname] = useState(data[props.match.params.id].full_name);
+    const [email, setEmail] = useState(data[props.match.params.id].email);
+    const [phone, setPhone] = useState(data[props.match.params.id].phone);
+    const [address, setAddress] = useState(data[props.match.params.id].address);
+
+    const [editedData, setEditedData] = useState();
+
+    console.log(data);
+
 
 useEffect(() => {
-    setData(JSON.stringify({
-        agenda_slug: "Cohort-V",   
+    setEditedData(JSON.stringify({
+        agenda_slug: data[props.match.params.id].agenda_slug,   
         full_name: fullname,
         email: email,
         phone: phone,
         address: address
     }) );
-},[fullname, email, phone, address])
+},[data, props.match.params.id,fullname, email, phone, address])
 
-    const formHandler = () => {
-        (data.full_name === "") ? alert("cannot be empty") : 
+const formEditHandler = () => {
+    (data.full_name === "") ? alert("cannot be empty") : 
 
-        fetch('https://assets.breatheco.de/apis/fake/contact/', {
-            method: 'POST',
-            body: data,
-            headers:{
-                'Content-Type': 'application/json'
-            }
-            }).then(res => res.json())
-            .then(response => {
-                alert('Success:', JSON.stringify(response));
-                window.location='/';
-            })
-            .catch(error => alert('Error:', error));
-    }
+    fetch('https://assets.breatheco.de/apis/fake/contact/'+data[props.match.params.id].id, {
+        method: 'PUT',
+        body: editedData,
+        headers:{
+            'Content-Type': 'application/json'
+        }
+        }).then(res => res.json())
+        .then(response => {
+            alert('Success:', JSON.stringify(response));
+            window.location='/';
+        })
+        .catch(error => alert('Error:', error));
+}
+
+
 
     return (
         <>
             <div className="container">
-                <h1 className="text-center">New Contact</h1>
+                <h1 className="text-center">Edit {data[props.match.params.id].agenda_slug}</h1>
+                <h3 className="text-center"><i>{data[props.match.params.id].full_name}</i></h3>
 
                 <div>
                     <label htmlFor="fullname">Full Name</label>
@@ -82,15 +93,15 @@ useEffect(() => {
                         onChange={e => setAddress(e.target.value)}
                     />
                     <br/>
-                    <input type="submit" value="send" onClick={formHandler}/>
+                    <input type="submit" value="send" onClick={formEditHandler} />
                 </div>
                 <br/>
-                <Link to="/" >
-                    <i className="fas fa-arrow-left"></i> go back to Home
+                <Link to="/" className="btn btn-danger" >
+                    <i className="fas fa-arrow-left"></i> Cancel
                 </Link>
             </div>
         </>
     );
 };
 
-export default NewContact;
+export default Edit;

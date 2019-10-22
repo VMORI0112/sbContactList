@@ -1,23 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { UserContext } from '../UserContext';
 import avatar from '../images/avatar.jpg';
 
 const Home = () => {
 
-    const [data, setData] = useState([]);
+    const {data} = useContext(UserContext);
+    const [modalVisible, setModalVisible] = useState('invisible');
+    const [modalTitle, setModalTitle] = useState();
+    const [modalID, setModalID] = useState();
 
-    useEffect(() => {
-        fetch('https://assets.breatheco.de/apis/fake/contact/agenda/harry_potter')
-        .then(res => res.json())
-        .then(data => setData(data));
-    },[data])
+    const modalToggle = (name, id) => {
+        setModalTitle(modalTitle ? "" : name);
+        setModalID(modalID ? "" : id);
+        setModalVisible(modalVisible === 'invisible' ? 'visible' : 'invisible');
+    }
+
+    const deleteHanfler = (id) => {
+        fetch('https://assets.breatheco.de/apis/fake/contact/'+id, {
+        method: 'DELETE',
+        headers:{
+            'Content-Type': 'application/json'
+        }
+        }).then(res => res.json())
+        .then(response => {
+            alert('Deleted!');
+        })
+        .catch(error => alert('Error:', error));
+    }
 
     return (
         <>
         <div className="container">
             <h1 className="text-center" >Home</h1>
-            <div class="d-flex justify-content-end">
+            <div className="d-flex justify-content-end">
                 <Link to="/NewContact" >
                     <button className="btn btn-primary">+ New Contact</button>
                 </Link>
@@ -33,9 +49,7 @@ const Home = () => {
                                     <img src={avatar} alt="..." className="img-fluid rounded-circle" />
                                 </div>
                                 <div className="col">
-                                    id: {item.id}
-                                    <br/>
-                                    slug: {item.agenda_slug}
+                                    agenda_slug: {item.agenda_slug}
                                     <br/>
                                     full_name: {item.full_name}
                                     <br/>
@@ -48,15 +62,25 @@ const Home = () => {
                                     create: {item.created_at}
                                 </div>
                                 <div className="col-2">
-                                    <i class="fas fa-user-edit iconsEdit"></i>
-                                    <i class="fas fa-trash-alt iconsDelete ml-2"></i>
+                                    <Link to={"/edit/"+index} >
+                                        <i className="fas fa-user-edit iconsEdit"></i>
+                                    </Link>
+                                    <i onClick={() => modalToggle(item.full_name, item.id)} className="fas fa-trash-alt iconsDelete ml-2"></i>
                                 </div>
                             </div>
                         </li>
                     )
                 })}
             </ul>
-        
+
+            <div id="myModal" className={["modal", modalVisible].join(' ')}>
+                <div className="modal-content">
+                    <span onClick={modalToggle} className="close">&times;</span>
+                    <h3 className="text-center">Are you sure to delete {modalTitle}?</h3>
+                    <button onClick={() => deleteHanfler(modalID)}>DELETE</button>
+                </div>
+            </div>
+                    
         
         </div>
         </>

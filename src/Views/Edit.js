@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { UserContext } from '../UserContext';
 
 const Edit = (props) => {
-
+    let history = useHistory();
     const {data} = useContext(UserContext);
 
     const [fullname, setFullname] = useState(data[props.match.params.id].full_name);
@@ -39,7 +39,7 @@ const formEditHandler = () => {
         }).then(res => res.json())
         .then(response => {
             alert('Success:', JSON.stringify(response));
-            window.location='/';
+            history.push('/');
         })
         .catch(error => alert('Error:', error));
 }
